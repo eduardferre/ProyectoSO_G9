@@ -1,0 +1,37 @@
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\usuario\Desktop\ProyectoSO_Grupo9-master\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\share\Projecte\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\share\Projecte\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojResolveAssemblyReference.cache
+C:\share\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\share\Proyecto\ProyectoSO_Grupo9_V2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojResolveAssemblyReference.cache
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+D:\3r\3A\Sistemes operatius\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\share\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\share\Proyecto\ProyectoSO_Grupo9_V2.2\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojResolveAssemblyReference.cache
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
