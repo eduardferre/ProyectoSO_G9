@@ -55,10 +55,13 @@
             this.Contraseña_Login_txt = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.Nombre_Login_txt = new System.Windows.Forms.TextBox();
-            this.Conectados_button = new System.Windows.Forms.Button();
             this.Conectados_lbl = new System.Windows.Forms.TextBox();
-            this.Servicios_button = new System.Windows.Forms.Button();
             this.Servicios_lbl = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.Invitar_button = new System.Windows.Forms.Button();
+            this.Respuestas_lbl = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.Registro.SuspendLayout();
             this.Login.SuspendLayout();
@@ -224,6 +227,7 @@
             this.Contraseña_Register_txt.Name = "Contraseña_Register_txt";
             this.Contraseña_Register_txt.Size = new System.Drawing.Size(164, 20);
             this.Contraseña_Register_txt.TabIndex = 11;
+            this.Contraseña_Register_txt.TextChanged += new System.EventHandler(this.Contraseña_Register_txt_TextChanged);
             // 
             // Nombre_Register_txt
             // 
@@ -231,6 +235,7 @@
             this.Nombre_Register_txt.Name = "Nombre_Register_txt";
             this.Nombre_Register_txt.Size = new System.Drawing.Size(164, 20);
             this.Nombre_Register_txt.TabIndex = 10;
+            this.Nombre_Register_txt.TextChanged += new System.EventHandler(this.Nombre_Register_txt_TextChanged);
             // 
             // Register_button
             // 
@@ -354,16 +359,7 @@
             this.Nombre_Login_txt.Name = "Nombre_Login_txt";
             this.Nombre_Login_txt.Size = new System.Drawing.Size(164, 20);
             this.Nombre_Login_txt.TabIndex = 4;
-            // 
-            // Conectados_button
-            // 
-            this.Conectados_button.Location = new System.Drawing.Point(828, 12);
-            this.Conectados_button.Name = "Conectados_button";
-            this.Conectados_button.Size = new System.Drawing.Size(136, 23);
-            this.Conectados_button.TabIndex = 17;
-            this.Conectados_button.Text = "Lista de conectados";
-            this.Conectados_button.UseVisualStyleBackColor = true;
-            this.Conectados_button.Click += new System.EventHandler(this.Conectados_button_Click);
+            this.Nombre_Login_txt.TextChanged += new System.EventHandler(this.Nombre_Login_txt_TextChanged);
             // 
             // Conectados_lbl
             // 
@@ -377,16 +373,6 @@
             this.Conectados_lbl.TabIndex = 18;
             this.Conectados_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // Servicios_button
-            // 
-            this.Servicios_button.Location = new System.Drawing.Point(828, 302);
-            this.Servicios_button.Name = "Servicios_button";
-            this.Servicios_button.Size = new System.Drawing.Size(136, 23);
-            this.Servicios_button.TabIndex = 19;
-            this.Servicios_button.Text = "Número de servicios";
-            this.Servicios_button.UseVisualStyleBackColor = true;
-            this.Servicios_button.Click += new System.EventHandler(this.Servicios_button_Click);
-            // 
             // Servicios_lbl
             // 
             this.Servicios_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -396,15 +382,70 @@
             this.Servicios_lbl.Size = new System.Drawing.Size(136, 83);
             this.Servicios_lbl.TabIndex = 20;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(843, 321);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(103, 13);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Número de servicios";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(843, 32);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(103, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Lista de conectados";
+            // 
+            // Invitar_button
+            // 
+            this.Invitar_button.Location = new System.Drawing.Point(15, 467);
+            this.Invitar_button.Name = "Invitar_button";
+            this.Invitar_button.Size = new System.Drawing.Size(131, 23);
+            this.Invitar_button.TabIndex = 23;
+            this.Invitar_button.Text = "Invitar a todos a jugar";
+            this.Invitar_button.UseVisualStyleBackColor = true;
+            this.Invitar_button.Click += new System.EventHandler(this.Invitar_button_Click);
+            // 
+            // Respuestas_lbl
+            // 
+            this.Respuestas_lbl.BackColor = System.Drawing.SystemColors.Control;
+            this.Respuestas_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Respuestas_lbl.Location = new System.Drawing.Point(170, 467);
+            this.Respuestas_lbl.Multiline = true;
+            this.Respuestas_lbl.Name = "Respuestas_lbl";
+            this.Respuestas_lbl.ReadOnly = true;
+            this.Respuestas_lbl.Size = new System.Drawing.Size(256, 97);
+            this.Respuestas_lbl.TabIndex = 24;
+            this.Respuestas_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(167, 451);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(200, 13);
+            this.label11.TabIndex = 25;
+            this.label11.Text = "Jugadores que han aceptado la petición:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(982, 445);
+            this.ClientSize = new System.Drawing.Size(987, 576);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.Respuestas_lbl);
+            this.Controls.Add(this.Invitar_button);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.Servicios_lbl);
-            this.Controls.Add(this.Servicios_button);
             this.Controls.Add(this.Conectados_lbl);
-            this.Controls.Add(this.Conectados_button);
             this.Controls.Add(this.Login);
             this.Controls.Add(this.Registro);
             this.Controls.Add(this.groupBox1);
@@ -447,14 +488,17 @@
         private System.Windows.Forms.TextBox Nombre_Register_txt;
         private System.Windows.Forms.Button Register_button;
         private System.Windows.Forms.Button Login_button;
-        private System.Windows.Forms.Button Conectados_button;
         private System.Windows.Forms.TextBox Conectados_lbl;
-        private System.Windows.Forms.Button Servicios_button;
         private System.Windows.Forms.Label Servicios_lbl;
         private System.Windows.Forms.ComboBox RolConsultas_txt;
         private System.Windows.Forms.DateTimePicker FechaConsultas_txt;
         private System.Windows.Forms.Button EnviarConsultas_button;
         private System.Windows.Forms.Button Desconectar_button;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button Invitar_button;
+        private System.Windows.Forms.TextBox Respuestas_lbl;
+        private System.Windows.Forms.Label label11;
     }
 }
 
