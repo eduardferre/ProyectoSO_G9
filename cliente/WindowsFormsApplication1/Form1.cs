@@ -14,10 +14,19 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        int puerto = 9040;
+        int puerto = 50078;
+        string nombreConectado;
         Socket server;
         Thread atender;
-        int conectado=0;
+        int conectado = 0;
+        int numConectados; //Número de conectados sin contar el propio cliente. 
+        int numRespuestas; //Número de respuestas a la invitación que se han recibido (tanto afirmativas como negativas).
+        int numRespuestasAceptar; //Número de jugadores que han aceptado la invitación de jugar.
+        int numInvitacionesIndividuales;
+        List<string> listaInvitadosIndividuales = new List<string>();
+        int invitacionActiva; //Parámetro de correción de errores que no permite que el jugador haga invitaciones para jugar hasta que las actuales invitaciones se hayan respondido.
+
+        delegate void DelegadoParaEscribir(string mensaje);
 
         public Form1()
         {
@@ -35,7 +44,7 @@ namespace WindowsFormsApplication1
                 server.Receive(msg2);
                 string[] trozos = Encoding.ASCII.GetString(msg2).Split('/');
                 int codigo = Convert.ToInt32(trozos[0]);
-                string mensaje = trozos[1].Split('\0')[0]; 
+                string mensaje = trozos[1].Split('\0')[0];
 
                 switch (codigo)
                 {
@@ -49,7 +58,6 @@ namespace WindowsFormsApplication1
                             {
                                 MessageBox.Show("El usario no se ha añadido porque ya existe");
                             }
-                            //Y ahora cerramos la conexión con el servidor.
                             conectado = 1;
 
                         break;
@@ -59,6 +67,7 @@ namespace WindowsFormsApplication1
                         string Contraseña = Convert.ToString(Contraseña_Login_txt.Text);
                         if (mensaje == "FOUND")
                             {
+                                nombreConectado = Nombre_Login_txt.Text;
                                 MessageBox.Show("Bienvenido de nuevo " + Nombre + ".");
                                 this.BackColor = Color.Green;
                                 conectado = 1;
@@ -92,24 +101,141 @@ namespace WindowsFormsApplication1
 
                         MessageBox.Show("El rol de la partida más larga de " + JugadorConsulta_txt.Text + " es: " + mensaje);
                         break;
-                   
+
+                    case 7: //Invitación para jugar
+                        string nombre_huesped = mensaje;
+                        if (nombre_huesped != nombreConectado) //El propio huésped no debe ver la invitación generada por si mismo.
+                        {
+                            DialogResult dialogResult;
+                            dialogResult = MessageBox.Show(nombre_huesped + " ha enviado una solicitud para iniciar la partida. ¿Deseas iniciar la partida ahora? Todos los jugadores deben estar de acuerdo para iniciar la partida.", "Confirmación", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                enviarRespuestaInvitacion(nombreConectado, 1); //La respuesta es sí.
+                            }
+                            else
+                            {
+                                enviarRespuestaInvitacion(nombreConectado, 0);  //La respuesta es no.
+                            }
+                        }
+                        break;
+
+                    case 71: //Respuesta a la invitación.
+                        string nombre_respuesta = trozos[1];
+                        int respuesta = Convert.ToInt32 (trozos[2].Split('\0')[0]);
+                        if (respuesta == 1) //Lo que significa que el jugador ha aceptado la invitación. Solo se añaden al label los que aceptan.
+                        {
+                            Respuestas_lbl.AppendText(nombre_respuesta); //En este caso, uno mismo sí va a poder verse en el label de personas que han aceptado.
+                            Respuestas_lbl.AppendText(Environment.NewLine);
+                            numRespuestasAceptar++;
+                            numRespuestas++;
+                            //MessageBox.Show("Hola, soy " + nombreConectado + ", y mi numRespuestas = " + Convert.ToString(numRespuestas));
+                        }
+                        else
+                        {
+                            numRespuestas++;
+                            //MessageBox.Show("Hola, soy " + nombreConectado + ", y mi numRespuestas = " + Convert.ToString(numRespuestas));
+                        }
+                        if (numRespuestas == numConectados) //Significa que ya han respondido todos.
+                        {
+                            if (numRespuestasAceptar == numRespuestas) //Significa que todas las respuestas son afirmativas => Empezará la partida.
+                            {
+                                MessageBox.Show("Todos los jugadores han aceptado la invitación. La partida puede empezar.");
+                            }
+                            else //Sigifica que alguien ha denegado la invitación => La partida NO empezará.
+                            {
+                                MessageBox.Show("La partida no empezará. NO todos los jugadores han aceptado la invitación.");
+                            }
+                            numRespuestas = 0;
+                            numRespuestasAceptar = 0;
+                        }
+                        break;
+                        
+                    case 8:
+                        Respuestas_lbl.Clear();
+                        ThreadStart ts = delegate { AtenderServidor(); };
+                        atender = new Thread(ts);
+                        atender.Start();
+                        string nombreHuesped = trozos[1];
+                        string nombreInvitadoIndividual = trozos[2];
+                        int numInvitados = Convert.ToInt32(trozos[3].Split('\0')[0]);
+                        if (nombreInvitadoIndividual == nombreConectado)  //Lo que significa que la invitación es para ese jugador.
+                        {
+                            DialogResult dialogResult;
+                            dialogResult = MessageBox.Show("Hola " + nombreInvitadoIndividual + ", has recibido una invitación de " + nombreHuesped + " para iniciar la partida. ¿Deseas iniciar la partida ahora? Todos los jugadores que han sido invitados deben estar de acuerdo para iniciar la partida.", "Confirmación", MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                enviarRespuestaInvitacionIndividual(nombreConectado, 1, numInvitados); //La respuesta es sí.
+                            }
+                            else
+                            {
+                                enviarRespuestaInvitacionIndividual(nombreConectado, 0, numInvitados);  //La respuesta es no.
+                            }
+                        }
+                        break;
+
+                    case 81: //Respuesta a la invitación.
+                        string nombre_respuesta_individual = trozos[1];
+                        int respuesta_individual = Convert.ToInt32(trozos[2]);
+                        int numInvitados_Respuesta = Convert.ToInt32(trozos[3].Split('\0')[0]);
+                        if (respuesta_individual == 1) //Lo que significa que el jugador ha aceptado la invitación. Solo se añaden al label los que aceptan.
+                        {
+                            Respuestas_lbl.AppendText(nombre_respuesta_individual); //En este caso, uno mismo sí va a poder verse en el label de personas que han aceptado, y aunque el jugador no haya sido invitado, también va a poder ver esta lista.
+                            Respuestas_lbl.AppendText(Environment.NewLine);
+                            numRespuestasAceptar++;
+                            numRespuestas++;
+                            //MessageBox.Show("Hola, soy " + nombreConectado + ", y mi numRespuestas = " + Convert.ToString(numRespuestas));
+                        }
+                        else
+                        {
+                            numRespuestas++;
+                            //MessageBox.Show("Hola, soy " + nombreConectado + ", y mi numRespuestas = " + Convert.ToString(numRespuestas));
+                        }
+                        if (numRespuestas == numInvitados_Respuesta) //Significa que ya han respondido todos los que habían sido invitados.
+                        {
+                            if (numRespuestasAceptar == numRespuestas) //Significa que todas las respuestas son afirmativas => Empezará la partida.
+                            {
+                                invitacionActiva = 0;
+                                numInvitacionesIndividuales = 0;
+                                InvitadosIndividuales_lbl.Clear();
+                                listaInvitadosIndividuales.Clear();
+                                Respuestas_lbl.Clear();
+                                MessageBox.Show("Pantalla de: " + nombreConectado + "Todos los jugadores han aceptado la invitación. La partida puede empezar.");
+                            }
+                            else //Sigifica que alguien ha denegado la invitación => La partida NO empezará.
+                            {
+                                invitacionActiva = 0;
+                                numInvitacionesIndividuales = 0;
+                                InvitadosIndividuales_lbl.Clear();
+                                listaInvitadosIndividuales.Clear();
+                                Respuestas_lbl.Clear();
+                                MessageBox.Show("Pantalla de: " + nombreConectado + " La partida no empezará. NO todos los jugadores han aceptado la invitación.");
+                            }
+                            numRespuestas = 0;
+                            numRespuestasAceptar = 0;
+                        }
+                        break;
+
                     case 110: //Lista conectados
                         Conectados_lbl.Clear();
+                        numConectados = 0;
                         string[] separadas;
-                        separadas = trozos[1].Split('/');
+                        separadas = mensaje.Split('/');
 
                         for (int i = 0; i < Convert.ToInt32(separadas[0]); i++)
                         {
-                            Conectados_lbl.AppendText(trozos[i + 2]);
-                            Conectados_lbl.AppendText(Environment.NewLine);
+                            if (trozos[i + 2] != nombreConectado)  //De esta forma, el jugador conectado no ve su propio nombre dentro de la lista de conectados, solo los de los demás.
+                            {
+                                Conectados_lbl.AppendText(trozos[i + 2]);
+                                Conectados_lbl.AppendText(Environment.NewLine);
+                                numConectados++;
+                            }
                         }
-                        
                         break;
                      
                     case 111: //Número de servicios
 
-                            Servicios_lbl.Text = mensaje;
-                        
+                        DelegadoParaEscribir delegado = new DelegadoParaEscribir(PonContador);
+                        Servicios_lbl.Invoke(delegado, new object[] {mensaje});  //Invocamos al thread que creó este objeto para que haga lo que se especifica a continuacion.
                         break;
                 }
             }
@@ -118,8 +244,17 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            numConectados = 0;
+            numRespuestas = 0;
+            numRespuestasAceptar = 0;
+            numInvitacionesIndividuales = 0;
+            invitacionActiva = 0;
         }
 
+        public void PonContador (string mensaje)
+        {
+             Servicios_lbl.Text = mensaje;
+        }
         private void Register_button_Click(object sender, EventArgs e)
         {
             if (conectado == 0)
@@ -127,7 +262,7 @@ namespace WindowsFormsApplication1
                 //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
                 //al que deseamos conectarnos
                 IPAddress direc = IPAddress.Parse("147.83.117.22");
-                IPEndPoint ipep = new IPEndPoint(direc, 50075);
+                IPEndPoint ipep = new IPEndPoint(direc, puerto);
 
                 this.BackColor = Color.Green;
                 string Nombre = Nombre_Register_txt.Text;
@@ -179,9 +314,10 @@ namespace WindowsFormsApplication1
                 //Creamos un IPEndPoint con el ip del servidor y puerto del servidor 
                 //al que deseamos conectarnos
                 IPAddress direc = IPAddress.Parse("147.83.117.22");
-                IPEndPoint ipep = new IPEndPoint(direc, 50075);
+                IPEndPoint ipep = new IPEndPoint(direc, puerto);
 
                 string Nombre = Nombre_Login_txt.Text;
+                nombreConectado = Nombre;
                 string Contraseña = Convert.ToString(Contraseña_Login_txt.Text);
 
                 //Creamos el socket 
@@ -333,6 +469,68 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void Invitar_button_Click(object sender, EventArgs e)
+        {
+            string mensaje = "7/" + nombreConectado + "/";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void enviarRespuestaInvitacion(string nombreRespuesta, int respuesta)
+        {
+            string mensaje = "71/" + nombreRespuesta + "/" + respuesta + "/";   //Se envía con la cabezera 71, el nombre del jugador que acaba de responder, seguido por su respuesta (0: No acepta, 1:Acepta).
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
+        private void Invitar_Individual_button_Click(object sender, EventArgs e)
+        {
+            if (invitacionActiva == 0)
+            {
+                string nombreInvitadoIndividual = Invitado_Individual_txt.Text;
+                InvitadosIndividuales_lbl.AppendText(nombreInvitadoIndividual);
+                InvitadosIndividuales_lbl.AppendText(Environment.NewLine);
+                listaInvitadosIndividuales.Add(nombreInvitadoIndividual);
+                numInvitacionesIndividuales++;
+            }
+            else
+            {
+                MessageBox.Show("Ya hay una o más peticiones en curso. Podrá iniciar otra petición una vez haya sido resulta la que está activa.");
+            }
+        }
+
+        private void EnviarPeticiones_button_Click(object sender, EventArgs e)
+        {
+            if (invitacionActiva == 0)
+            {
+                if (listaInvitadosIndividuales.Count != 0)
+                {
+                    int i = 0;
+                    while (i < listaInvitadosIndividuales.Count)
+                    {
+                        string mensaje = "8/" + nombreConectado + "/" + listaInvitadosIndividuales[i] + "/" + numInvitacionesIndividuales + "/";
+                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                        server.Send(msg);
+                        i++;
+                    }
+                    invitacionActiva = 1;
+                }
+                else
+                {
+                    MessageBox.Show("No hay jugadores seleccionados todavía.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ya hay una o más peticiones en curso. Podrá iniciar otra petición una vez haya sido resulta la que está activa.");
+            }
+        }
+        private void enviarRespuestaInvitacionIndividual(string nombreRespuesta, int respuesta, int numInvitados)
+        {
+            string mensaje = "81/" + nombreRespuesta + "/" + respuesta + "/" + numInvitados + "/";   
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
 
         private void Nombre_Register_txt_TextChanged(object sender, EventArgs e)
         {

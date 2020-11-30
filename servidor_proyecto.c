@@ -243,7 +243,7 @@ void Realizar_Consulta4 (char *buff2, int err, MYSQL *conn, char jugador[30]) {
 	}
 }
 int  Pon_ConectadoLista (ListaConectados *lista, char nombre[20],int socket) {
-	// A?? un nuevo conectado. Retorna 0 si ok y -1 si la lista ya estaba llena y no lo ha podido a??r.
+	// Incorpora a un nuevo conectado. Retorna 0 si ok y -1 si la lista ya estaba llena y no lo ha podido incorporar.
 	if (lista->num==100)
 		return -1;
 	else{
@@ -302,6 +302,8 @@ void DameConectadosLista (ListaConectados *lista, char conectados[300]) {
 		pthread_mutex_unlock(&mutex);
 	}
 }
+
+
 void *Atender_Cliente (void *socket) {
 	
 	int sock_conn;
@@ -314,6 +316,7 @@ void *Atender_Cliente (void *socket) {
 	int ret;
 	int err;
 	
+	int numeroRespuestas;
 	
 	//Antes de nada, vamos a conectarnos a la base de datos SR ("Squad Raid").
 	MYSQL *conn;
@@ -353,12 +356,22 @@ void *Atender_Cliente (void *socket) {
 		// Ya tenemos el codigo de la petición
 		char consulta [20];
 		char nombre[20];
+		char nombre_huesped [20];
+		char nombre_invitado_individual [20];
+		char invitacion_individual [50];
+		char nombre_respuesta [20];  //Nombre de la persona que responde a la invitacion.
+		char nombre_respuesta_individual [20];
+		int respuesta_peticion;  //Respuesta a la invitacion (0: NO acepta, 1: Acepta).
+		int respuesta_peticion_individual;
+		int num_conectados_individuales;
+		char respuesta_completa [20]; //Contiene el nombre del jugador + su respuesta: Nombre/0, o Nombre/1
+		char respuesta_completa_individual [20];
 		char password[50];
 		int res;
 		
 		char notificacion_conectados [512];
 		
-		if      (codigo == 0)   { //Petición de desconexión
+		if (codigo == 0)   { //Petición de desconexión
 			terminar = 1;
 			
 			res = Elimina_ConectadoLista(&miLista, nombre);
@@ -410,7 +423,7 @@ void *Atender_Cliente (void *socket) {
 			
 			p = strtok(NULL, "/");
 			strcpy(password, p);
-			printf ("Contraseña %s\n", password);
+			printf ("Password: %s\n", password);
 			Login(buff2, err, conn, p, nombre, password);
 			
 			res = Pon_ConectadoLista(&miLista, nombre, sock_conn);
@@ -488,9 +501,7 @@ void *Atender_Cliente (void *socket) {
 		}		
 		else if (codigo == 6)   { //Se desea llamar la Consluta4
 
-			
 			char jugador [30];
-			
 			p = strtok(NULL, "/");
 			strcpy (consulta, p);
 			printf ("Esta es la %s\n", consulta);
@@ -502,13 +513,53 @@ void *Atender_Cliente (void *socket) {
 			
 			Realizar_Consulta4 (buff2, err, conn, jugador);
 		}
+		else if (codigo == 7)
+		{
+			p = strtok(NULL, "/");
+			printf("Codigo: %i\n", codigo);
+			strcpy(nombre_huesped, p);
+			printf("Nombre del huesped: %s\n", nombre_huesped);
+			
+		}
+		else if (codigo == 71) //El mensaje contiene la respuesta a la invitacion del huesped.
+		{
+			p = strtok(NULL, "/");
+			strcpy(nombre_respuesta, p);
+			p = strtok(NULL, "/");
+			respuesta_peticion = atoi (p);
+			sprintf(respuesta_completa, "%s/%i", nombre_respuesta, respuesta_peticion);
+			printf("Respuesta completa = %s\n", respuesta_completa);
+		}
+		else if (codigo == 8)
+		{
+			p = strtok(NULL, "/");
+			printf("Codigo: %i\n", codigo);
+			strcpy(nombre_huesped, p);
+			p = strtok(NULL,"/");
+			strcpy(nombre_invitado_individual, p);
+			p = strtok(NULL,"/");
+			num_conectados_individuales = atoi (p);
+			printf("Nombre del huesped: %s; Nombre invitado individual: %s\n", nombre_huesped, nombre_invitado_individual);
+			sprintf(invitacion_individual, "%s/%s/%i", nombre_huesped, nombre_invitado_individual, num_conectados_individuales);
+		}
+		else if (codigo == 81) //El mensaje contiene la respuesta a la invitacion del huesped.
+		{
+			p = strtok(NULL, "/");
+			strcpy(nombre_respuesta_individual, p);
+			p = strtok(NULL, "/");
+			respuesta_peticion_individual = atoi (p);
+			p = strtok(NULL, "/");
+			num_conectados_individuales = atoi (p);
+			sprintf(respuesta_completa_individual, "%s/%i/%i", nombre_respuesta_individual, respuesta_peticion_individual, num_conectados_individuales);
+			printf("Respuesta completa = %s\n", respuesta_completa_individual);
+		}
 		else if (codigo == 112) { //En caso que no haya consultas
 			printf( "No hay ninguna consulta\n");
 			strcpy (buff2, "NOTHING");
 		}
 		
 		// Y lo enviamos
-		if (codigo != 0) {
+		if ((codigo != 0) && (codigo != 7) && (codigo != 71) && (codigo != 8) && (codigo != 81)) {
 			printf ("Respuesta: %s\n", buff2);
 			write (sock_conn, buff2, strlen(buff2));
 		}
@@ -516,11 +567,47 @@ void *Atender_Cliente (void *socket) {
 			pthread_mutex_lock(&mutex);
 			contador = contador + 1;
 			pthread_mutex_unlock(&mutex);
-			//notificar a los clientes
+			//notificar a los clientes conectados
 			char notificacion_servicios [20];
 			sprintf(notificacion_servicios, "111/%d", contador);
 			for (int j = 0; j < i; j++) {
 				write (sockets[j], notificacion_servicios, strlen(notificacion_servicios));
+			}
+		}
+		if (codigo == 7)
+		{
+			char invitacion [30];
+			sprintf(invitacion, "7/%s", nombre_huesped);
+			for (int j = 0; j < i; j++) {
+				write (sockets[j], invitacion, strlen(invitacion));
+			}
+		}
+		if (codigo == 71)
+		{
+			char respuesta [30];
+			sprintf(respuesta, "71/%s", respuesta_completa);
+			printf("Respuesta del servidor: %s\n", respuesta);
+			
+			for (int j = 0; j < i; j++) {
+				write (sockets[j], respuesta, strlen(respuesta));
+			}
+		}
+		if (codigo == 8)
+		{
+			char invitacion_individual_completa [30];
+			sprintf(invitacion_individual_completa, "8/%s", invitacion_individual);
+			for (int j = 0; j < i; j++) {
+				write (sockets[j], invitacion_individual_completa, strlen(invitacion_individual_completa));
+			}
+		}
+		if (codigo == 81)
+		{
+			char respuesta_individual [30];
+			sprintf(respuesta_individual, "81/%s", respuesta_completa_individual);
+			printf("Respuesta del servidor: %s\n", respuesta_individual);
+			
+			for (int j = 0; j < i; j++) {
+				write (sockets[j], respuesta_individual, strlen(respuesta_individual));
 			}
 		}
 			
@@ -535,7 +622,7 @@ void *Atender_Cliente (void *socket) {
 int main(int argc, char *argv[]) {
 	
 	int sock_conn, sock_listen;
-	int puerto = 50075;
+	int puerto = 50078;
 	struct sockaddr_in serv_adr;
 	
 	// INICIALITZACIONS
