@@ -357,9 +357,15 @@ void *Atender_Cliente (void *socket) {
 		char consulta [20];
 		char nombre[20];
 		char nombre_huesped [20];
+		char nombre_invitado_individual [20];
+		char invitacion_individual [50];
 		char nombre_respuesta [20];  //Nombre de la persona que responde a la invitacion.
+		char nombre_respuesta_individual [20];
 		int respuesta_peticion;  //Respuesta a la invitacion (0: NO acepta, 1: Acepta).
+		int respuesta_peticion_individual;
+		int num_conectados_individuales;
 		char respuesta_completa [20]; //Contiene el nombre del jugador + su respuesta: Nombre/0, o Nombre/1
+		char respuesta_completa_individual [20];
 		char password[50];
 		int res;
 		
@@ -524,13 +530,36 @@ void *Atender_Cliente (void *socket) {
 			sprintf(respuesta_completa, "%s/%i", nombre_respuesta, respuesta_peticion);
 			printf("Respuesta completa = %s\n", respuesta_completa);
 		}
+		else if (codigo == 8)
+		{
+			p = strtok(NULL, "/");
+			printf("Codigo: %i\n", codigo);
+			strcpy(nombre_huesped, p);
+			p = strtok(NULL,"/");
+			strcpy(nombre_invitado_individual, p);
+			p = strtok(NULL,"/");
+			num_conectados_individuales = atoi (p);
+			printf("Nombre del huesped: %s; Nombre invitado individual: %s\n", nombre_huesped, nombre_invitado_individual);
+			sprintf(invitacion_individual, "%s/%s/%i", nombre_huesped, nombre_invitado_individual, num_conectados_individuales);
+		}
+		else if (codigo == 81) //El mensaje contiene la respuesta a la invitacion del huesped.
+		{
+			p = strtok(NULL, "/");
+			strcpy(nombre_respuesta_individual, p);
+			p = strtok(NULL, "/");
+			respuesta_peticion_individual = atoi (p);
+			p = strtok(NULL, "/");
+			num_conectados_individuales = atoi (p);
+			sprintf(respuesta_completa_individual, "%s/%i/%i", nombre_respuesta_individual, respuesta_peticion_individual, num_conectados_individuales);
+			printf("Respuesta completa = %s\n", respuesta_completa_individual);
+		}
 		else if (codigo == 112) { //En caso que no haya consultas
 			printf( "No hay ninguna consulta\n");
 			strcpy (buff2, "NOTHING");
 		}
 		
 		// Y lo enviamos
-		if ((codigo != 0) && (codigo != 7) && (codigo != 71)) {
+		if ((codigo != 0) && (codigo != 7) && (codigo != 71) && (codigo != 8) && (codigo != 81)) {
 			printf ("Respuesta: %s\n", buff2);
 			write (sock_conn, buff2, strlen(buff2));
 		}
@@ -561,6 +590,24 @@ void *Atender_Cliente (void *socket) {
 			
 			for (int j = 0; j < i; j++) {
 				write (sockets[j], respuesta, strlen(respuesta));
+			}
+		}
+		if (codigo == 8)
+		{
+			char invitacion_individual_completa [30];
+			sprintf(invitacion_individual_completa, "8/%s", invitacion_individual);
+			for (int j = 0; j < i; j++) {
+				write (sockets[j], invitacion_individual_completa, strlen(invitacion_individual_completa));
+			}
+		}
+		if (codigo == 81)
+		{
+			char respuesta_individual [30];
+			sprintf(respuesta_individual, "81/%s", respuesta_completa_individual);
+			printf("Respuesta del servidor: %s\n", respuesta_individual);
+			
+			for (int j = 0; j < i; j++) {
+				write (sockets[j], respuesta_individual, strlen(respuesta_individual));
 			}
 		}
 			
