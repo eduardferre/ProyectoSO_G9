@@ -35,3 +35,12 @@ C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debu
 C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
 C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\share\Proyecto\ProyectoSO_Grupo9_V3\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.Cache
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csprojAssemblyReference.cache
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.GenerateResource.cache
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\clienteForm.csproj.CoreCompileInputs.cache
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\usuario\Desktop\ProyectoSO_G9-dev-v4\cliente\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
