@@ -55,11 +55,10 @@
             this.Contraseña_Login_txt = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.Nombre_Login_txt = new System.Windows.Forms.TextBox();
-            this.Conectados_lbl = new System.Windows.Forms.TextBox();
             this.Servicios_lbl = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.Invitar_button = new System.Windows.Forms.Button();
+            this.Invitar_todos_button = new System.Windows.Forms.Button();
             this.Respuestas_lbl = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -68,6 +67,8 @@
             this.Invitado_Individual_txt = new System.Windows.Forms.TextBox();
             this.InvitadosIndividuales_lbl = new System.Windows.Forms.TextBox();
             this.EnviarPeticiones_button = new System.Windows.Forms.Button();
+            this.Conectados_lbl = new System.Windows.Forms.TextBox();
+            this.limpiar_invitaciones_button = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.Registro.SuspendLayout();
             this.Login.SuspendLayout();
@@ -367,18 +368,6 @@
             this.Nombre_Login_txt.TabIndex = 4;
             this.Nombre_Login_txt.TextChanged += new System.EventHandler(this.Nombre_Login_txt_TextChanged);
             // 
-            // Conectados_lbl
-            // 
-            this.Conectados_lbl.BackColor = System.Drawing.SystemColors.Control;
-            this.Conectados_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Conectados_lbl.Location = new System.Drawing.Point(828, 56);
-            this.Conectados_lbl.Multiline = true;
-            this.Conectados_lbl.Name = "Conectados_lbl";
-            this.Conectados_lbl.ReadOnly = true;
-            this.Conectados_lbl.Size = new System.Drawing.Size(136, 212);
-            this.Conectados_lbl.TabIndex = 18;
-            this.Conectados_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // Servicios_lbl
             // 
             this.Servicios_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -408,32 +397,32 @@
             this.label10.TabIndex = 22;
             this.label10.Text = "Lista de conectados";
             // 
-            // Invitar_button
+            // Invitar_todos_button
             // 
-            this.Invitar_button.Location = new System.Drawing.Point(51, 536);
-            this.Invitar_button.Name = "Invitar_button";
-            this.Invitar_button.Size = new System.Drawing.Size(131, 23);
-            this.Invitar_button.TabIndex = 23;
-            this.Invitar_button.Text = "Invitar a todos a jugar";
-            this.Invitar_button.UseVisualStyleBackColor = true;
-            this.Invitar_button.Click += new System.EventHandler(this.Invitar_button_Click);
+            this.Invitar_todos_button.Location = new System.Drawing.Point(51, 536);
+            this.Invitar_todos_button.Name = "Invitar_todos_button";
+            this.Invitar_todos_button.Size = new System.Drawing.Size(131, 23);
+            this.Invitar_todos_button.TabIndex = 23;
+            this.Invitar_todos_button.Text = "Invitar a todos a jugar";
+            this.Invitar_todos_button.UseVisualStyleBackColor = true;
+            this.Invitar_todos_button.Click += new System.EventHandler(this.Invitar_todos_button_Click);
             // 
             // Respuestas_lbl
             // 
             this.Respuestas_lbl.BackColor = System.Drawing.SystemColors.Control;
             this.Respuestas_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Respuestas_lbl.Location = new System.Drawing.Point(685, 536);
+            this.Respuestas_lbl.Location = new System.Drawing.Point(767, 516);
             this.Respuestas_lbl.Multiline = true;
             this.Respuestas_lbl.Name = "Respuestas_lbl";
             this.Respuestas_lbl.ReadOnly = true;
-            this.Respuestas_lbl.Size = new System.Drawing.Size(279, 140);
+            this.Respuestas_lbl.Size = new System.Drawing.Size(197, 149);
             this.Respuestas_lbl.TabIndex = 24;
             this.Respuestas_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(734, 520);
+            this.label11.Location = new System.Drawing.Point(764, 491);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(200, 13);
@@ -474,10 +463,10 @@
             // 
             // Invitado_Individual_txt
             // 
-            this.Invitado_Individual_txt.Location = new System.Drawing.Point(358, 538);
+            this.Invitado_Individual_txt.Location = new System.Drawing.Point(362, 538);
             this.Invitado_Individual_txt.Margin = new System.Windows.Forms.Padding(2);
             this.Invitado_Individual_txt.Name = "Invitado_Individual_txt";
-            this.Invitado_Individual_txt.Size = new System.Drawing.Size(105, 20);
+            this.Invitado_Individual_txt.Size = new System.Drawing.Size(101, 20);
             this.Invitado_Individual_txt.TabIndex = 29;
             // 
             // InvitadosIndividuales_lbl
@@ -502,11 +491,32 @@
             this.EnviarPeticiones_button.UseVisualStyleBackColor = true;
             this.EnviarPeticiones_button.Click += new System.EventHandler(this.EnviarPeticiones_button_Click);
             // 
+            // Conectados_lbl
+            // 
+            this.Conectados_lbl.Location = new System.Drawing.Point(828, 56);
+            this.Conectados_lbl.Multiline = true;
+            this.Conectados_lbl.Name = "Conectados_lbl";
+            this.Conectados_lbl.Size = new System.Drawing.Size(136, 225);
+            this.Conectados_lbl.TabIndex = 32;
+            this.Conectados_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // limpiar_invitaciones_button
+            // 
+            this.limpiar_invitaciones_button.Location = new System.Drawing.Point(819, 671);
+            this.limpiar_invitaciones_button.Name = "limpiar_invitaciones_button";
+            this.limpiar_invitaciones_button.Size = new System.Drawing.Size(99, 23);
+            this.limpiar_invitaciones_button.TabIndex = 33;
+            this.limpiar_invitaciones_button.Text = "Limpiar invitaciones";
+            this.limpiar_invitaciones_button.UseVisualStyleBackColor = true;
+            this.limpiar_invitaciones_button.Click += new System.EventHandler(this.limpiar_invitaciones_button_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(979, 710);
+            this.Controls.Add(this.limpiar_invitaciones_button);
+            this.Controls.Add(this.Conectados_lbl);
             this.Controls.Add(this.EnviarPeticiones_button);
             this.Controls.Add(this.InvitadosIndividuales_lbl);
             this.Controls.Add(this.Invitado_Individual_txt);
@@ -515,11 +525,10 @@
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.Respuestas_lbl);
-            this.Controls.Add(this.Invitar_button);
+            this.Controls.Add(this.Invitar_todos_button);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.Servicios_lbl);
-            this.Controls.Add(this.Conectados_lbl);
             this.Controls.Add(this.Login);
             this.Controls.Add(this.Registro);
             this.Controls.Add(this.groupBox1);
@@ -562,7 +571,6 @@
         private System.Windows.Forms.TextBox Nombre_Register_txt;
         private System.Windows.Forms.Button Register_button;
         private System.Windows.Forms.Button Login_button;
-        private System.Windows.Forms.TextBox Conectados_lbl;
         private System.Windows.Forms.Label Servicios_lbl;
         private System.Windows.Forms.ComboBox RolConsultas_txt;
         private System.Windows.Forms.DateTimePicker FechaConsultas_txt;
@@ -570,7 +578,7 @@
         private System.Windows.Forms.Button Desconectar_button;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button Invitar_button;
+        private System.Windows.Forms.Button Invitar_todos_button;
         private System.Windows.Forms.TextBox Respuestas_lbl;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
@@ -579,6 +587,8 @@
         private System.Windows.Forms.TextBox Invitado_Individual_txt;
         private System.Windows.Forms.TextBox InvitadosIndividuales_lbl;
         private System.Windows.Forms.Button EnviarPeticiones_button;
+        private System.Windows.Forms.TextBox Conectados_lbl;
+        private System.Windows.Forms.Button limpiar_invitaciones_button;
     }
 }
 
