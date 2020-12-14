@@ -214,7 +214,7 @@ int Busca_Socket (ListaConectados *lista, char nombre[20]) { // Funcion que busc
 	
 	return -1;
 }
-MYSQL *Conecta_BaseDatos () { // Funcipn que conecta la base de datos.
+MYSQL *Conecta_BaseDatos () { // Funcion que conecta la base de datos.
 	
 	MYSQL *conn; // Antes de nada, vamos a conectarnos a la base de datos SR ("Squad Raid"). 
 	conn = mysql_init(NULL); // Creamos una conexion al servidor MYSQL
@@ -597,7 +597,12 @@ void Envia_Invitacion(ListaConectados *lista, char invitacion[200]) {
 	}
 	
 }
-
+void Enviar_Mensaje(ListaConectados *lista, char mensaje[200]) {
+	
+	char nombre_destino[20];
+	
+	
+}
 void *Atender_Cliente (void *socket) {
 	
 	int sock_conn = * (int *) socket;
@@ -828,12 +833,20 @@ void *Atender_Cliente (void *socket) {
 			
 			write(socket_respuesta, respuesta, strlen(respuesta));
 		}
+		if (codigo == 80) {
+			
+			char respuesta[200];
+			strcpy (respuesta, copia);
+			notif_BCAST(&misConectados, respuesta);			
+			
+		}		
+		
 		if (codigo == 112) { //En caso que no haya consultas
 			
 			printf( "No hay ninguna consulta\n");
 			strcpy (salida, "NOTHING");
 		}
-		if ((codigo != 0) && (codigo != 7) && (codigo != 70) && (codigo != 71)) {
+		if ((codigo != 0) && (codigo != 7) && (codigo != 70) && (codigo != 71) && (codigo != 80)) {
 			printf ("Respuesta: %s\n", salida);
 			write(sock_conn, salida, strlen(salida));
 		}
@@ -866,7 +879,7 @@ int main(int argc, char *argv[]) {
 	
 	Inicializa_Conectados(&misConectados);
 	conn = Conecta_BaseDatos();
-	int sock_listen = Conecta_Socket(9037);
+	int sock_listen = Conecta_Socket(9060);
 	int sock_conn, ret;
 	pthread_t thread[100]; // Definimos el thread con la estructura para crear threads.
 	
