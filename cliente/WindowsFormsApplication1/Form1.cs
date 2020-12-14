@@ -14,7 +14,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        int puerto = 9037;
+        int puerto = 9060;
         string nombreConectado;
         Socket server;
         Thread atender;
@@ -23,6 +23,7 @@ namespace WindowsFormsApplication1
         int numRespuestas; //Número de respuestas a la invitación que se han recibido (tanto afirmativas como negativas).
         int numRespuestasAceptar; //Número de jugadores que han aceptado la invitación de jugar.
         int numInvitacionesIndividuales;
+        int InvitacionAceptada = 0;
 
         List<string> listaConectados = new List<string>();
         List<string> listaInvitadosIndividuales = new List<string>();
@@ -280,10 +281,12 @@ namespace WindowsFormsApplication1
                             dialogResult = MessageBox.Show(nombre_huesped + " ha enviado una solicitud para iniciar la partida. ¿Deseas iniciar la partida ahora? Todos los jugadores deben estar de acuerdo para iniciar la partida.", "Confirmación", MessageBoxButtons.YesNo);
                             if (dialogResult == DialogResult.Yes)
                             {
+                                InvitacionAceptada = 1;
                                 enviarRespuestaInvitacion_Aceptada(nombre_huesped, nombreConectado); // Se ha aceptado la invitación.
                             }
                             else
                             {
+                                InvitacionAceptada = 0;
                                 enviarRespuestaInvitacion_Rechazada(nombre_huesped, nombreConectado); // Se ha denegado la invitación.
                             }
                         }
@@ -343,6 +346,16 @@ namespace WindowsFormsApplication1
                             numRespuestasAceptar = 0;
                         }
                         break;
+                        
+                    case 80: //Enviar mensaje
+                        
+                        string chat = trozos[1];
+                        MensajesRecibidos_lbl.AppendText(chat);
+                        MensajesRecibidos_lbl.AppendText(Environment.NewLine);
+                       
+                           
+                    break; 
+
 
                     case 110: //Lista conectados
                         Conectados_lbl.Clear();
@@ -778,6 +791,13 @@ namespace WindowsFormsApplication1
             server.Send(msg);
         }
 
+        private void EnviarMensaje_button_Click(object sender, EventArgs e)
+        {
+            string mensaje = "80/" + nombreConectado + ": " + Mensaje_txt.Text + "/";
+            byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+            server.Send(msg);
+        }
+
         private void Nombre_Register_txt_TextChanged(object sender, EventArgs e)
         {
             Nombre_Register_txt.MaxLength = 10;
@@ -806,5 +826,6 @@ namespace WindowsFormsApplication1
             Respuestas_lbl.Clear();
             listaInvitadosIndividuales.Clear();
         }
+
     }
 }
